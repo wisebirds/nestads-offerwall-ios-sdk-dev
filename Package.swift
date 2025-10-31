@@ -8,7 +8,7 @@ let package = Package(
   products: [
     .library(
       name: "NestAdsOfferwallSDK",
-      targets: ["NestAdsOfferwallSDK"]
+      targets: ["NestAdsOfferwallSDKWrapper"]
     )
   ],
   dependencies: [
@@ -16,14 +16,14 @@ let package = Package(
   ],
   targets: [
     .binaryTarget(
-      name: "NestAdsOfferwallSDKBinary",
+      name: "NestAdsOfferwallSDK",
       url: "https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev/releases/download/0.1.0-dev/NestAdsOfferwallSDK.xcframework.zip",
-      checksum: "3739b3c845c535361468507bc453c49af3660ad21961b6fd996b1214ccebf23b"
+      checksum: "b218bc36cd6a04b727572681d4fb3646183ea8bbee527cd8bca618ed64e950bb"
     ),
     .target(
-      name: "NestAdsOfferwallSDK",
+      name: "NestAdsOfferwallSDKWrapper",
       dependencies: [
-        "NestAdsOfferwallSDKBinary",
+        "NestAdsOfferwallSDK",
         .product(name: "AdchainSDK", package: "adchain-sdk-ios-release")
       ],
       path: "Sources/Wrapper"

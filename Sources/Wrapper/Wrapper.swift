@@ -1,2 +1,2 @@
 import Foundation
-@_exported import NestAdsOfferwallSDKBinary
+@_exported import NestAdsOfferwallSDK
