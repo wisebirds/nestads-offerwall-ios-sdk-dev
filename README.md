@@ -222,7 +222,7 @@ NestAdsOfferwallSDK is built on a modular, layered architecture:
 - **Minimum iOS Version**: 14.0
 - **Swift Version**: 5.9+
 - **Distribution Format**: xcframework (binary)
-- **Dependencies**: AdChain SDK 1.0.45+
+- **Dependencies**: AdChain SDK 1.0.47+
 - **Build Settings**: `BUILD_LIBRARY_FOR_DISTRIBUTION` enabled
 
 ## Troubleshooting

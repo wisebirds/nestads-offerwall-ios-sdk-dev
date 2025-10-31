@@ -12,13 +12,13 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(url: "https://github.com/1selfworld-labs/adchain-sdk-ios-release.git", from: "1.0.45")
+    .package(url: "https://github.com/1selfworld-labs/adchain-sdk-ios-release.git", .upToNextMinor(from: "1.0.47"))
   ],
   targets: [
     .binaryTarget(
       name: "NestAdsOfferwallSDK",
       url: "https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev/releases/download/0.1.0-dev/NestAdsOfferwallSDK.xcframework.zip",
-      checksum: "b218bc36cd6a04b727572681d4fb3646183ea8bbee527cd8bca618ed64e950bb"
+      checksum: "254452ae5c412e840ab74aeee8ce51cc43c3cd0fdcd5719f0baa65b7ba52f4af"
     ),
     .target(
       name: "NestAdsOfferwallSDKWrapper",
