@@ -11,7 +11,7 @@ NestAds Offerwall SDK provides offerwall monetization features powered by AdChai
 - iOS 14.0+
 - Swift 5.9+
 - Xcode 15.0+
-- **NestAdsSDK v2.7.7 ~ v2.7.x** (Peer Dependency - required for integrated mode)
+- **NestAdsSDK v2.7.8+** (Peer Dependency - required for integrated mode)
 
 ## Installation
 
@@ -34,11 +34,11 @@ Or add via Xcode:
 
 **⚠️ Important**: NestAdsSDK is a **peer dependency**. You must add both packages to use the integrated mode.
 
-If you're using **NestAdsSDK v2.7.7+**, add both packages:
+If you're using **NestAdsSDK v2.7.8+**, add both packages:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/wisebirds/nestads-ios-sdk", .upToNextMinor(from: "2.7.7")),
+    .package(url: "https://github.com/wisebirds/nestads-ios-sdk", .upToNextMinor(from: "2.7.8")),
     .package(url: "https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev", .exact("0.1.1-dev"))
 ]
 ```
@@ -172,13 +172,99 @@ logout()
 ### Display Offerwall
 
 ```swift
-openOfferwall(
-    from viewController: UIViewController,
-    placementCode: String,
-    showNavigationBar: Bool = false,
-    useNativeNavigationBar: Bool = false,
-    delegate: NestAdsOfferwallDelegate? = nil
+NestAds.Offerwall.openOfferwall(
+    from: self,
+    placementCode: "PLACEMENT_CODE",
+    showNavigationBar: false,
+    useNativeNavigationBar: false,
+    delegate: self
 )
+```
+
+### Load and Display Quiz
+
+**Available since NestAdsSDK v2.7.8 and NestAdsOfferwallSDK v0.1.1+**
+
+```swift
+// Create Quiz instance
+let quiz = NestAds.Offerwall.quiz()
+
+// Set delegate
+quiz.setDelegate(self)
+
+// Load Quiz
+quiz.load()
+
+// Click Quiz to display it
+quiz.clickQuiz(quizId: "QUIZ_ID", from: self)
+
+// Implement delegate
+extension ViewController: NestAdsOfferwallQuizDelegate {
+    func quizDidLoad(_ response: NestAdsOfferwallQuizResponse) {
+        print("Quiz loaded: \(response.events.count) events")
+    }
+
+    func quizDidLoadFail(_ error: NestAdsOfferwallError) {
+        print("Quiz load failed: \(error)")
+    }
+
+    func quizDidComplete(_ event: NestAdsOfferwallQuizEvent, rewardAmount: Int) {
+        print("Quiz completed with reward: \(rewardAmount)")
+    }
+}
+```
+
+### Load and Display Mission
+
+**Available since NestAdsSDK v2.7.8 and NestAdsOfferwallSDK v0.1.1+**
+
+```swift
+// Create Mission instance
+let mission = NestAds.Offerwall.mission()
+
+// Set delegate
+mission.setDelegate(self)
+
+// Load Mission
+mission.load()
+
+// Click Mission to display it
+mission.clickMission(missionId: "MISSION_ID", from: self)
+
+// Trigger reward button click
+mission.triggerRewardButtonClick(from: self)
+
+// Refresh mission list
+mission.refreshMissionList(unitId: "UNIT_ID")
+
+// Destroy mission instance when done
+mission.destroy()
+
+// Implement delegate
+extension ViewController: NestAdsOfferwallMissionDelegate {
+    func missionDidLoad(
+        _ response: NestAdsOfferwallMissionResponse,
+        progress: NestAdsOfferwallMissionProgress
+    ) {
+        print("Missions loaded: \(response.missions.count) missions")
+    }
+
+    func missionDidLoadFail(_ error: NestAdsOfferwallError) {
+        print("Mission load failed: \(error)")
+    }
+
+    func missionDidComplete(_ mission: NestAdsOfferwallMissionModel) {
+        print("Mission completed: \(mission.title)")
+    }
+
+    func missionDidProgress(_ mission: NestAdsOfferwallMissionModel) {
+        print("Mission progress updated")
+    }
+
+    func missionListDidRefresh(unitId: String?) {
+        print("Mission list refreshed")
+    }
+}
 ```
 
 ### Status Properties
