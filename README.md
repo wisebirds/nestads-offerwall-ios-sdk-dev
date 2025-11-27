@@ -1,6 +1,6 @@
 # NestAdsOfferwallSDK
 
-![Version](https://img.shields.io/badge/version-0.1.1-dev-blue.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-dev-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS%2014.0%2B-lightgrey.svg)
 ![Swift](https://img.shields.io/badge/Swift-5.9%2B-orange.svg)
 
@@ -21,14 +21,14 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev", .exact("0.1.1-dev"))
+    .package(url: "https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev", .exact("1.0.0-dev"))
 ]
 ```
 
 Or add via Xcode:
 1. File → Add Package Dependencies
 2. Enter: `https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev`
-3. Select version: `0.1.1-dev`
+3. Select version: `1.0.0-dev`
 
 ### Integration with NestAdsSDK (Recommended)
 
@@ -39,7 +39,7 @@ If you're using **NestAdsSDK v2.7.8+**, add both packages:
 ```swift
 dependencies: [
     .package(url: "https://github.com/wisebirds/nestads-ios-sdk", .upToNextMinor(from: "2.7.8")),
-    .package(url: "https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev", .exact("0.1.1-dev"))
+    .package(url: "https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev", .exact("1.0.0-dev"))
 ]
 ```
 
@@ -183,7 +183,7 @@ NestAds.Offerwall.openOfferwall(
 
 ### Load and Display Quiz
 
-**Available since NestAdsSDK v2.7.8 and NestAdsOfferwallSDK v0.1.1+**
+**Available since NestAdsSDK v2.7.8 and NestAdsOfferwallSDK v1.0.0+**
 
 ```swift
 // Create Quiz instance
@@ -216,7 +216,7 @@ extension ViewController: NestAdsOfferwallQuizDelegate {
 
 ### Load and Display Mission
 
-**Available since NestAdsSDK v2.7.8 and NestAdsOfferwallSDK v0.1.1+**
+**Available since NestAdsSDK v2.7.8 and NestAdsOfferwallSDK v1.0.0+**
 
 ```swift
 // Create Mission instance
