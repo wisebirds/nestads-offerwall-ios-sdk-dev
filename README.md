@@ -1,16 +1,16 @@
 # NestAdsOfferwallSDK
 
-![Version](https://img.shields.io/badge/version-1.0.0-dev-blue.svg)
-![Platform](https://img.shields.io/badge/platform-iOS%2014.0%2B-lightgrey.svg)
+![Version](https://img.shields.io/badge/version-1.0.1-dev-blue.svg)
+![Platform](https://img.shields.io/badge/platform-iOS%2015.0%2B-lightgrey.svg)
 ![Swift](https://img.shields.io/badge/Swift-5.9%2B-orange.svg)
 
 NestAds Offerwall SDK provides offerwall monetization features powered by AdChain SDK. It can be used standalone or integrated with NestAdsSDK.
 
 ## Requirements
 
-- iOS 14.0+
-- Swift 5.9+
-- Xcode 15.0+
+- iOS 15.0+
+- Swift 6.3+
+- Xcode 26.4+
 - **NestAdsSDK v2.7.8+** (Peer Dependency - required for integrated mode)
 
 ## Installation
@@ -21,14 +21,14 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev", .exact("1.0.0-dev"))
+    .package(url: "https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev", .exact("1.0.1-dev"))
 ]
 ```
 
 Or add via Xcode:
 1. File → Add Package Dependencies
 2. Enter: `https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev`
-3. Select version: `1.0.0-dev`
+3. Select version: `1.0.1-dev`
 
 ### Integration with NestAdsSDK (Recommended)
 
@@ -39,7 +39,7 @@ If you're using **NestAdsSDK v2.7.8+**, add both packages:
 ```swift
 dependencies: [
     .package(url: "https://github.com/wisebirds/nestads-ios-sdk", .upToNextMinor(from: "2.7.8")),
-    .package(url: "https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev", .exact("1.0.0-dev"))
+    .package(url: "https://github.com/wisebirds/nestads-offerwall-ios-sdk-dev", .exact("1.0.1-dev"))
 ]
 ```
 
@@ -140,30 +140,49 @@ extension ViewController: NestAdsOfferwallDelegate {
 
 ```swift
 // With NestAdsSDK
-NestAds.Offerwall.initialize(
+NestAds.shared.initialize(offerwallConfig: OfferwallConfig(
     application: UIApplication,
     appKey: String,
     appSecret: String,
-    environment: String = "production",
-    timeoutMillis: NSNumber? = nil,
-    completion: ((NSError?) -> Void)? = nil
-)
+    timeoutMillis: Int64? = nil,
+    completion: ((Error?) -> Void)? = nil  // nil = 성공, 실패 = NSError(domain "NestAdsOfferwall", code). 메인 스레드 1회
+))
 
-// Standalone
+// Standalone (completion 을 생략하는 overload 도 있음)
 NestAdsOfferwall.shared.initialize(
     application: UIApplication,
     appKey: String,
     appSecret: String,
     environment: String,
-    timeoutMillis: NSNumber?
+    timeoutMillis: NSNumber?,
+    completion: ((NestAdsOfferwallError?) -> Void)?  // nil = 성공. 메인 스레드 1회
 )
 ```
+
+`isInitialized` 는 AdChain 이 초기화 성공을 알린 뒤 `true` 가 됩니다.
+
+| Code | 의미 |
+|---|---|
+| 4002 | appKey 가 비었거나 유효하지 않음 |
+| 4003 | appSecret 이 비었거나 유효하지 않음 |
+| 4004 | 앱 검증 실패 |
+| 5002 | 네트워크 실패 |
+| 9999 | 알 수 없는 오류 |
+| 1000 | NestAdsSDK 초기화가 중단돼 오퍼월을 초기화하지 않음 (NestAdsSDK 경유) |
+| 1001 | NestAdsOfferwallSDK 를 찾을 수 없음 (NestAdsSDK 경유) |
+| 1002 | 설치된 NestAdsOfferwallSDK 가 초기화 결과를 지원하지 않음. **초기화는 진행되므로** 오퍼월을 막지 말고 `isInitialized` 로 확인 (NestAdsSDK 경유) |
 
 ### User Management
 
 ```swift
-// Login
+// Login (gender: 0=Unknown(미전송), 1=Male, 2=Female / birthYear: 0 이하면 미전송)
 login(userId: String, gender: Int, birthYear: Int)
+login(userId: String, gender: Int, birthYear: Int, delegate: NestAdsOfferwallLoginDelegate?)
+
+// NestAdsOfferwallLoginDelegate
+func offerwallLoginDidSucceed()
+func offerwallLoginDidFail(_ error: NestAdsOfferwallError)
+func offerwallLogoutDidComplete()  // logout() 호출 시 마지막 login 의 delegate 로 전달
 
 // Logout
 logout()
@@ -306,9 +325,9 @@ NestAdsOfferwallSDK is built on a modular, layered architecture:
 ## Technical Details
 
 - **Minimum iOS Version**: 14.0
-- **Swift Version**: 5.9+
+- **Swift Version**: 6.3+
 - **Distribution Format**: xcframework (binary)
-- **Dependencies**: AdChain SDK 1.0.47+
+- **Dependencies**: AdChain SDK 1.0.54+
 - **Build Settings**: `BUILD_LIBRARY_FOR_DISTRIBUTION` enabled
 
 ## Troubleshooting
